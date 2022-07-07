@@ -184,9 +184,6 @@ public class GameManager : MonoBehaviour
         ItemToPut();
         EnemyToPut();
 
-        PlantToPut();
-        
-
     }
 
     public void ItemToPut()
@@ -214,6 +211,8 @@ public class GameManager : MonoBehaviour
         int count = 0;
 
         //Level4부터
+        PlantToPut();
+
         if (stage >= 4)
         {
             for (var j = 0; j < (stage * 2); j++)
@@ -256,10 +255,12 @@ public class GameManager : MonoBehaviour
             //Instantiate(EnemyPlant_Prefab, new Vector3(Plants[0].x, Plants[0].y, Plants[0].z);
             //Instantiate(EnemyPlant_Prefab, Plants[0], transform.rotation);
 
-            for (var j = 0; j < (stage - 5); j++)
+            for (var j = 0; j < (stage - 4); j++)
             {
                 {
-                    EnemyPlants[j] = Instantiate(EnemyPlant_Prefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
+                    //Instantiate(EnemyPlant_Prefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
+                    //Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                    Instantiate(EnemyPlant_Prefab,Plants[j],transform.rotation);
                 }
             }
         }
@@ -326,6 +327,14 @@ public class GameManager : MonoBehaviour
             ItemTxt.text = string.Format("{0:n0}", player.lunchitem) + "/" + string.Format("{0:n0}", (stage)); //아이템 먹은 개수 반영하기
             EnemyCnt1 = stage * 2;
             Enemy1Txt.text = "x" + string.Format("{0:n0}", EnemyCnt1); //해당 stage의 enemy 개수
+            
+            //EnemyPlant
+            EnemyCnt2 = (stage - 4);
+            if(EnemyCnt2 <= 0)
+            {
+                EnemyCnt2 = 0;
+            }
+            Enemy2Txt.text = "x" + string.Format("{0:n0}", EnemyCnt2); //해당 stage의 enemy 개수
 
             //적들의 숫자
             Enemy1Txt.text = "x " + EnemyCnt1.ToString();
