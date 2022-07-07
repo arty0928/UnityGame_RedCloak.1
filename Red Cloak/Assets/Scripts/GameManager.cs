@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour
             //먹은 아이템 개수
             //ItemTxt.text = "Item" + string.Format("{0:n0}", player.lunchitem); //아이템 먹은 개수 반영하기
             ItemTxt.text = string.Format("{0:n0}", player.lunchitem) + "/" + string.Format("{0:n0}", (stage * 2)); //아이템 먹은 개수 반영하기
-            EnemyCnt1 = stage * 5;
+            EnemyCnt1 = stage * 2;
             Enemy1Txt.text = "x" + string.Format("{0:n0}", EnemyCnt1); //해당 stage의 enemy 개수
 
             //적들의 숫자
