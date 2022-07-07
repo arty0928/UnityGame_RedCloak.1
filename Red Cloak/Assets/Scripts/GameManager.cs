@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameCam;
     public PlayerController player; //player 스크립트로 받기
     //public Enemy boss; //적 스크립트로 받기
-    public EnemyControllerAngle enemyScript;
+    //public EnemyControllerAngle enemyScript;
 
     public int stage;
     public float playTime;//게임시간
@@ -94,8 +94,6 @@ public class GameManager : MonoBehaviour
         isPlay = true;
         isDead = false;
         LevlSet = true;
-
-
 
         Debug.Log("isPlay: " + isPlay);
         Debug.Log("isDead: " + isDead);
@@ -209,6 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void EnemyToPut()
     {
+        Debug.Log("EnemyToPut");
         var Enemies = GameObject.FindGameObjectsWithTag("LunchToPut").Select(EnemyToPut => EnemyToPut.transform.position).ToArray();
         Enemies = Enemies.OrderBy(Enemy => Random.Range(-1.0f, 1.0f)).ToArray();
 

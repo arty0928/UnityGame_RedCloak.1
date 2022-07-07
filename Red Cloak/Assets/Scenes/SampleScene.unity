@@ -11878,7 +11878,7 @@ Transform:
   m_GameObject: {fileID: 1117694299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.472, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.4, z: 1}
   m_Children:
   - {fileID: 1288979446}
   - {fileID: 396851886}
@@ -23872,6 +23872,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyB_0707
       objectReference: {fileID: 0}
+    - target: {fileID: 5818572525419530778, guid: 5c6a5213dcfa09d48be4401b63c3c33d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c6a5213dcfa09d48be4401b63c3c33d, type: 3}
 --- !u!1001 &6278197346016183040
@@ -24086,13 +24090,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyC_0707 (BigSize)
       objectReference: {fileID: 0}
+    - target: {fileID: 4474783796659137149, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4474783796659137150, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4474783796659137150, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.4
+      value: 23.351
       objectReference: {fileID: 0}
     - target: {fileID: 4474783796659137150, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -24100,7 +24108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4474783796659137150, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.2
+      value: 4.955
       objectReference: {fileID: 0}
     - target: {fileID: 4474783796659137150, guid: e65beab3d1d45b647a6e6e35327a31cb, type: 3}
       propertyPath: m_LocalRotation.w
