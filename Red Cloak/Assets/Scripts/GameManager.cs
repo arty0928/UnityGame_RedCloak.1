@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     //enemy
     public Transform[] EnemyPoint;
     public Vector3 EnemyPos;
-    public GameObject EnemyB;
+    public GameObject EnemyB_Prefab;
     //public GameObject EnemyC_Prefab;
 
 
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
             Destroy(items[i]);
         }
 
-        //EnemyToPut();
+        EnemyToPut();
 
 
     }
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
         for (var j = 0; j < (stage * 2); j++)
         {
             {
-                Instantiate(EnemyB, Enemies[j], transform.rotation);
+                Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
             }
         }
 
