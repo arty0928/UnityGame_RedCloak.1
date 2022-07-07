@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     public Transform[] EnemyPoint;
     public Vector3 EnemyPos;
     public GameObject EnemyB_Prefab;
-    //public GameObject EnemyC_Prefab;
+    public GameObject EnemyC_Prefab;
 
 
     //levelUp에 따른 enemy 변화
@@ -203,30 +203,32 @@ public class GameManager : MonoBehaviour
         var Enemies = GameObject.FindGameObjectsWithTag("LunchToPut").Select(EnemyToPut => EnemyToPut.transform.position).ToArray();
         Enemies = Enemies.OrderBy(Enemy => Random.Range(-1.0f, 1.0f)).ToArray();
 
-        for (var j = 0; j < (stage * 2); j++)
+        int count = 0;
+
+        if (stage >= 4)
         {
+            for (var j = 0; j < (stage * 2); j++)
             {
-                Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+
+                {
+                    if (count < stage * 1)
+                    {
+                        Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
+                        count++;
+                    }
+                    else
+                    {
+                        Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                    }
+
+                }
             }
         }
 
-        /* else if(stage >= 3)
-         {
-
-             for (var j = 0; j < (stage * 2); j++)
-             {
-                 if (count < stage * 1)
-                 {
-                     Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
-                     count++;
-                 }
-                 else
-                 {
-                     Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
-                 }
-
-             }
-         }*/
+        else {
+            for (var j = 0; j < (stage * 2); j++)
+                Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+        }
 
     }
 
