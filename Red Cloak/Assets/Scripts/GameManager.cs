@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
     public GameObject EnemyB_Prefab;
     public GameObject EnemyC_Prefab;
 
+    public GameObject EnemyPlant_Prefab;
+
 
     //levelUp에 따른 enemy 변화
     public int count = 0;
@@ -232,6 +234,14 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void PlantToPut()
+    {
+        var Plants = GameObject.FindGameObjectsWithTag("KillingPlant").Select(PlantToPut => PlantToPut.transform.position).ToArray();
+        Plants = Plants.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
+        //itemPos = items[0];
+
+        //Instantiate(EnemyPlant_Prefab,)
+    }
 
 
     private void Update()
