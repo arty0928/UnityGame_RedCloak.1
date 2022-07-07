@@ -92,7 +92,10 @@ public class PlayerController : MonoBehaviour
         }
 
         else if (other.tag == "Enemy") 
-        //else if (other.tag == "Enemy")
+        {
+            GameManager.I.GameOver();
+        }
+        else if(other.tag == "KillingPlant")
         {
             GameManager.I.GameOver();
         }

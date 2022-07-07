@@ -45,7 +45,10 @@ public class GameManager : MonoBehaviour
     public Transform[] EnemyPoint;
     public Vector3 EnemyPos;
     public GameObject EnemyB_Prefab;
-    public GameObject EnemyC_Prefab;
+    public GameObject EnemyC_Prefab; //SizeUp
+    //public GameObject EnemyD_Prefab; //KillingPlants
+    Transform[] EnemyPlants;
+
 
     public GameObject EnemyPlant_Prefab;
 
@@ -183,6 +186,9 @@ public class GameManager : MonoBehaviour
         ItemToPut();
         EnemyToPut();
 
+        PlantToPut();
+        
+
     }
 
     public void ItemToPut()
@@ -200,6 +206,7 @@ public class GameManager : MonoBehaviour
         //target = GameObject.FindGameObjectWithTag("Item").transform;
     }
 
+
     public void EnemyToPut()
     {
         var Enemies = GameObject.FindGameObjectsWithTag("LunchToPut").Select(EnemyToPut => EnemyToPut.transform.position).ToArray();
@@ -207,6 +214,7 @@ public class GameManager : MonoBehaviour
 
         int count = 0;
 
+        //Level4부터
         if (stage >= 4)
         {
             for (var j = 0; j < (stage * 2); j++)
@@ -232,15 +240,30 @@ public class GameManager : MonoBehaviour
                 Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
         }
 
+        
+
     }
 
+    //Level6부터
     public void PlantToPut()
     {
-        var Plants = GameObject.FindGameObjectsWithTag("KillingPlant").Select(PlantToPut => PlantToPut.transform.position).ToArray();
-        Plants = Plants.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
-        //itemPos = items[0];
+        
+        if (stage >= 6)
+        {
+            var Plants = GameObject.FindGameObjectsWithTag("KillingPlantToPut").Select(PlantToPut => PlantToPut.transform.position).ToArray();
+            Plants = Plants.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
+            //EnemyPlants[i]
 
-        //Instantiate(EnemyPlant_Prefab,)
+            //Instantiate(EnemyPlant_Prefab, new Vector3(Plants[0].x, Plants[0].y, Plants[0].z);
+            //Instantiate(EnemyPlant_Prefab, Plants[0], transform.rotation);
+
+            for (var j = 0; j < (stage - 5); j++)
+            {
+                {
+                    EnemyPlants[j] = Instantiate(EnemyPlant_Prefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
+                }
+            }
+        }
     }
 
 
@@ -293,7 +316,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Play Time Over");
             }
 
-            if (player.lunchitem >= stage + 1)
+            if (player.lunchitem >= stage)
             {
                 Debug.Log("Eat all Lunch at This Stage");
                 StageEnd();
@@ -301,7 +324,7 @@ public class GameManager : MonoBehaviour
 
             //먹은 아이템 개수
             //ItemTxt.text = "Item" + string.Format("{0:n0}", player.lunchitem); //아이템 먹은 개수 반영하기
-            ItemTxt.text = string.Format("{0:n0}", player.lunchitem) + "/" + string.Format("{0:n0}", (stage * 2)); //아이템 먹은 개수 반영하기
+            ItemTxt.text = string.Format("{0:n0}", player.lunchitem) + "/" + string.Format("{0:n0}", (stage)); //아이템 먹은 개수 반영하기
             EnemyCnt1 = stage * 2;
             Enemy1Txt.text = "x" + string.Format("{0:n0}", EnemyCnt1); //해당 stage의 enemy 개수
 

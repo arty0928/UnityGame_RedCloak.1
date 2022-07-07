@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8418712197683929101}
   - component: {fileID: 8418712197978809188}
   m_Layer: 8
-  m_Name: EnemyC_0707 (BigSize)
+  m_Name: EnemyC_0707 (BigSize) no
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
