@@ -32,9 +32,10 @@ public class PlayerController : MonoBehaviour
     Text lunchCount;
     public static int lunchAmount;
     
-
     public Transform[] ItemPoint;
 
+    //Audio
+    public AudioSource CoinSound;
 
     
     private void Start()
@@ -60,9 +61,7 @@ public class PlayerController : MonoBehaviour
             switch (item.type)
             {
                 case Item.Type.LunchItem:
-                    //manager.SfxPlay(AudioManager.Sfx.coin);
-                    //AudioManager.I.SfxPlay(AudioManager.Sfx.coin);
-
+                    //CoinSound.Play();
                     lunchitem += item.value;
                     if (lunchitem > maxItem)
                         lunchitem = maxItem;
