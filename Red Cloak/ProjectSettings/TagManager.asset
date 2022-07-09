@@ -10,6 +10,7 @@ TagManager:
   - patrolPoint
   - KillingPlant
   - KillingPlantToPut
+  - Wall
   layers:
   - Default
   - TransparentFX

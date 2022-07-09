@@ -51,6 +51,11 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
+        PlayerMove();
+    }
+    
+    private void PlayerMove()
+    {
         _rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
     }
 
@@ -102,6 +107,39 @@ public class PlayerController : MonoBehaviour
         else if(other.tag == "KillingPlant")
         {
             GameManager.I.GameOver();
+        }
+
+        while(other.tag == "Wall")
+        {
+            var Collider = other.transform.position;
+            Debug.Log("Collider.x: " + Collider.x);
+            //Debug.Log("Collider.y: " + Collider.y);
+            Debug.Log("Collider.z: " + Collider.z);
+
+            Debug.Log("_joystick.Horizontal: "+_joystick.Horizontal);
+            Debug.Log("_joystick.Vertical: "+ _joystick.Vertical);
+
+            var distx = (Collider.x - _rigidbody.transform.position.x);
+            var disty = (Collider.y - _rigidbody.transform.position.y);
+
+            Debug.Log("distx: "+ distx);
+            Debug.Log("disty: "+ disty);
+
+
+            var Joystick_H = Mathf.Abs(_joystick.Horizontal);
+            var Joystick_V = Mathf.Abs(_joystick.Vertical);
+
+            if(Joystick_H > Joystick_V)
+            {
+                _rigidbody.velocity = new Vector3(0 * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
+                Debug.Log("Joystick_H > Joystick_V -> move to vertical ");
+            }
+            else
+            {
+                _rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, 0 * _moveSpeed);
+                Debug.Log("Joystick_H < Joystick_V -> move to horizontal ");
+            }
+
         }
     }
 }
