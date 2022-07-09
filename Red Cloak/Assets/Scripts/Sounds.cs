@@ -14,7 +14,7 @@ public class Sounds : MonoBehaviour
             CoinSound.Play();
         }
 
-        if(GameManager.I.isPlay == true && GameManager.I.isDead == false)
+        //if(GameManager.I.isPlay == true && GameManager.I.isDead == false)
         {
             if (other.tag == "Enemy" || other.tag == "KillingPlant")
             {
