@@ -14,10 +14,14 @@ public class Sounds : MonoBehaviour
             CoinSound.Play();
         }
 
-        if(other.tag == "Enemy" || other.tag == "KillingPlant") 
+        if(GameManager.I.isPlay == true && GameManager.I.isDead == false)
         {
-            GameOver.Play();
+            if (other.tag == "Enemy" || other.tag == "KillingPlant")
+            {
+                GameOver.Play();
+            }
         }
+        
 
     }
 }

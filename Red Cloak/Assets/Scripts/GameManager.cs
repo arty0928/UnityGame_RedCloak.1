@@ -228,11 +228,11 @@ public class GameManager : MonoBehaviour
 
         if (stage >= 4)
         {
-            for (var j = 0; j < (stage * 2); j++)
+            for (var j = 0; j < (stage * 1); j++)
             {
 
                 {
-                    if (count < stage * 1)
+                    if (count < Mathf.FloorToInt(stage/2))
                     {
                         Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
                         count++;
@@ -247,7 +247,7 @@ public class GameManager : MonoBehaviour
         }
 
         else {
-            for (var j = 0; j < (stage * 2); j++)
+            for (var j = 0; j < (stage * 1); j++)
                 Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
         }
 
@@ -316,7 +316,15 @@ public class GameManager : MonoBehaviour
         //if (isPlay == true && isDead == false && LevlSet == true)
         {
             //Stage text
-            StageTxt.text = "STAGE " + stage;
+            if(stage >= 10)
+            {
+                StageTxt.text = "STAGE" + stage;
+            }
+            else
+            {
+                StageTxt.text = "STAGE " + stage;
+
+            }
 
 
             //남은 play 시간
@@ -342,7 +350,7 @@ public class GameManager : MonoBehaviour
             //먹은 아이템 개수
             //ItemTxt.text = "Item" + string.Format("{0:n0}", player.lunchitem); //아이템 먹은 개수 반영하기
             ItemTxt.text = string.Format("{0:n0}", player.lunchitem) + "/" + string.Format("{0:n0}", (stage)); //아이템 먹은 개수 반영하기
-            EnemyCnt1 = stage * 2;
+            EnemyCnt1 = stage * 1;
             Enemy1Txt.text = "x" + string.Format("{0:n0}", EnemyCnt1); //해당 stage의 enemy 개수
             
             //EnemyPlant
