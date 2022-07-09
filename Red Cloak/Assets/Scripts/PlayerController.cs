@@ -45,8 +45,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     { _rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
+    }*/
+
+    private void LateUpdate()
+    {
+        _rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
     }
 
     //아이템 입수

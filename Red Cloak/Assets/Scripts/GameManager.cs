@@ -125,6 +125,19 @@ public class GameManager : MonoBehaviour
         EnemyToPut();
 
 
+        if (stage >= 6)
+        {
+            var KillingPlant = GameObject.FindGameObjectsWithTag("KillingPlant");
+            for (var i = 0; i < KillingPlant.Length; i++)
+            {
+                Destroy(KillingPlant[i]);
+            }
+
+            PlantToPut();
+        }
+        
+
+
     }
 
     /*IEnumerator InBattle()
@@ -258,9 +271,13 @@ public class GameManager : MonoBehaviour
             for (var j = 0; j < (stage - 4); j++)
             {
                 {
-                    //Instantiate(EnemyPlant_Prefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
-                    //Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
-                    Instantiate(EnemyPlant_Prefab,Plants[j],transform.rotation);
+                    if(0< stage-4 && stage-4< 9)
+                    {
+                        //Instantiate(EnemyPlant_Prefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
+                        //Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                        Instantiate(EnemyPlant_Prefab, Plants[j], transform.rotation);
+                    }
+                    
                 }
             }
         }
