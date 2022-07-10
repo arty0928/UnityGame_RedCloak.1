@@ -9,19 +9,18 @@ public class Sounds : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Item")
+        if (GameManager.I.isPlay == true && GameManager.I.isDead == false && GameManager.I.LevlSet==true)
         {
-            CoinSound.Play();
-        }
+            if (other.tag == "Item")
+            {
+                CoinSound.Play();
+            }
 
-        //if(GameManager.I.isPlay == true && GameManager.I.isDead == false)
-        {
-            if (other.tag == "Enemy" || other.tag == "KillingPlant")
+            else if (other.tag == "Enemy" || other.tag == "KillingPlant")
             {
                 GameOver.Play();
             }
         }
-        
-
+     
     }
 }

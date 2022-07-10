@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
     public bool LevlSet; //level 세팅이 완료되었는가
     public GameObject overPanel;
 
+    //audio
+    public AudioSource GameOverSound;
+
     private void Awake()
     {
         I = this;
@@ -151,6 +154,7 @@ public class GameManager : MonoBehaviour
     {
         if (isPlay == true && isDead == false)
         {
+            GameOverSound.Play();
             Debug.Log("Game Over");
             Debug.Log("isPlay: " + isPlay);
             Debug.Log("isDead: " + isDead);
