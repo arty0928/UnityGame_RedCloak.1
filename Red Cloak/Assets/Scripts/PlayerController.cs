@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource GameOverSound;
 
 
+    //HideZone
+    public bool isHide= false;
 
 
     Vector3 LookDir;
@@ -197,7 +199,14 @@ public class PlayerController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other);
-        if (other.tag == "Item")
+
+        if (other.tag == "Wall")
+        {
+            isWall = true;
+        }
+
+
+        else if (other.tag == "Item")
         {
 
             //아이템 스크립트 가져오기
@@ -234,10 +243,18 @@ public class PlayerController : MonoBehaviour
             //lunchCount.text = lunchAmount.ToString();
         }
 
+        else if (other.tag == "HideZone")
+        {
+            isHide = true;
+        }
+
         else if (other.tag == "Enemy")
         {
+            if(isHide == false)
+            {
+                GameManager.I.GameOver();
+            }
             
-            GameManager.I.GameOver();
         }
         else if (other.tag == "KillingPlant")
         {
@@ -245,11 +262,8 @@ public class PlayerController : MonoBehaviour
             GameManager.I.GameOver();
         }
 
-        if (other.tag == "Wall")
-        {
-            isWall = true;
-        }
-
+        
+        
        
     }
 
@@ -258,6 +272,10 @@ public class PlayerController : MonoBehaviour
         if(other.tag == "Wall")
         {
             isWall = false;
+        }
+        else if(other.tag == "HideZone")
+        {
+            isHide = false;
         }
     }
 }

@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
     public GameObject EnemyPlant_Prefab;
 
 
+    //HideZonde
+    public GameObject HideZone_Prefab;
+    private int HideZoneCallCount = 0;
+
     //levelUp에 따른 enemy 변화
     public int count = 0;
 
@@ -201,6 +205,11 @@ public class GameManager : MonoBehaviour
         ItemToPut();
         EnemyToPut();
 
+        if(stage >= 10)
+        {
+            Invoke("HideZoneToPut", 3.0f);
+        }
+
     }
 
     public void ItemToPut()
@@ -287,7 +296,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void HideZoneToPut()
+    {
+        if(HideZoneCallCount == 0)
+        {
+            
+        }
+        
+        var HideZone = GameObject.FindGameObjectsWithTag("HideZone").Select(HideZone => HideZone.transform.position).ToArray();
+        HideZone = HideZone.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
 
+       for (var i = 0; i < 2; i++)
+       {
+            Instantiate(HideZone_Prefab, HideZone[i], transform.rotation);
+
+       }
+       HideZoneCallCount++;
+      
+    }
     private void Update()
     {
 
@@ -306,6 +332,7 @@ public class GameManager : MonoBehaviour
             dirrectArrow.transform.rotation = new Quaternion(0, dirrectArrow.transform.rotation.y, 0, dirrectArrow.transform.rotation.w);
 
         }
+       
     }
 
 
