@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         player.lunchitem = 0;
         player.transform.position = Vector3.zero;
         //isPlay = false;
-        stage++;
+        
         count = 0;
 
         var items = GameObject.FindGameObjectsWithTag("Enemy");
@@ -142,7 +142,18 @@ public class GameManager : MonoBehaviour
 
             PlantToPut();
         }
-        
+
+        if (stage >=10)
+        {
+            var HideZoneExist = GameObject.FindGameObjectsWithTag("HideZone");
+            for (var j = 0; j < HideZoneExist.Length; j++)
+            {
+                Destroy(HideZoneExist[j]);
+            }
+            HideZoneToPut();
+
+        }
+        stage++;
 
 
     }
@@ -178,6 +189,7 @@ public class GameManager : MonoBehaviour
         }
 
         count = 0;
+        HideZoneCallCount = 0;
 
 
     }
@@ -192,8 +204,8 @@ public class GameManager : MonoBehaviour
     public void ReStart()
     {
         Debug.Log("ReStart");
-        Debug.Log("isPlay: " + isPlay);
-        Debug.Log("isDead: " + isDead);
+        //Debug.Log("isPlay: " + isPlay);
+        //Debug.Log("isDead: " + isDead);
         SceneManager.LoadScene(0);
         count = 0;
     }
@@ -205,11 +217,12 @@ public class GameManager : MonoBehaviour
         ItemToPut();
         EnemyToPut();
 
-        if(stage >= 10)
+        /*if(stage >= 10)
         {
             Invoke("HideZoneToPut", 3.0f);
-        }
+        }*/
 
+        //HideZoneToPut();
     }
 
     public void ItemToPut()
@@ -218,11 +231,12 @@ public class GameManager : MonoBehaviour
         items = items.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
         itemPos = items[0];
 
-
+        //Debug.Log("ItemToPut");
         target = Instantiate(ItemPrefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
+        Debug.Log("stage: "+stage);
         Debug.Log("ItemToput");
-        Debug.Log("isPlay: " + isPlay);
-        Debug.Log("isDead: " + isDead);
+        //Debug.Log("isPlay: " + isPlay);
+        //Debug.Log("isDead: " + isDead);
 
         //target = GameObject.FindGameObjectWithTag("Item").transform;
     }
@@ -233,19 +247,21 @@ public class GameManager : MonoBehaviour
         Debug.Log("EnemyToPut");
         var Enemies = GameObject.FindGameObjectsWithTag("LunchToPut").Select(EnemyToPut => EnemyToPut.transform.position).ToArray();
         Enemies = Enemies.OrderBy(Enemy => Random.Range(-1.0f, 1.0f)).ToArray();
+        
 
         int count = 0;
 
-        //Level4부터
+        //Level6부터
         PlantToPut();
+        HideZoneToPut();
 
-        if (stage >= 4)
+        if (stage >= 5)
         {
             for (var j = 0; j < (stage * 1); j++)
             {
-
+                if(stage * 1 <= Enemies.Length)
                 {
-                    if (count < Mathf.FloorToInt(stage/2))
+                    if (count < Mathf.FloorToInt(stage / 2))
                     {
                         Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
                         count++;
@@ -254,14 +270,18 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
                     }
-
                 }
+                
             }
         }
 
         else {
             for (var j = 0; j < (stage * 1); j++)
-                Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                if(stage * 1 <= Enemies.Length)
+                {
+                    Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                }
+                
         }
 
         
@@ -298,28 +318,41 @@ public class GameManager : MonoBehaviour
 
     public void HideZoneToPut()
     {
-        if(HideZoneCallCount == 0)
+
+        if (stage >= 6)
         {
-            
+            /*if (HideZoneCallCount != 0)
+            {
+                Debug.Log("HideZoneCallCount: " + HideZoneCallCount);
+                var HideZoneExist = GameObject.FindGameObjectsWithTag("HideZoneToPut");
+                for (var j = 0; j < HideZoneExist.Length; j++)
+                {
+                    Destroy(HideZoneExist[j]);
+                }
+            }*/
+
+            var HideZone = GameObject.FindGameObjectsWithTag("HideZoneToPut").Select(HideZone => HideZone.transform.position).ToArray();
+            HideZone = HideZone.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
+            Instantiate(HideZone_Prefab, HideZone[0], transform.rotation);
+            Instantiate(HideZone_Prefab, HideZone[1], transform.rotation);
+            Instantiate(HideZone_Prefab, HideZone[2], transform.rotation);
+
+            /*for (var i = 0; i < 3; i++)
+            {
+                Instantiate(HideZone_Prefab, HideZone[i], transform.rotation);
+
+            }*/
+            HideZoneCallCount++;
         }
         
-        var HideZone = GameObject.FindGameObjectsWithTag("HideZone").Select(HideZone => HideZone.transform.position).ToArray();
-        HideZone = HideZone.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
-
-       for (var i = 0; i < 2; i++)
-       {
-            Instantiate(HideZone_Prefab, HideZone[i], transform.rotation);
-
-       }
-       HideZoneCallCount++;
       
     }
     private void Update()
     {
 
         Debug.Log("Update");
-        Debug.Log("isPlay: " + isPlay);
-        Debug.Log("isDead: " + isDead);
+        //Debug.Log("isPlay: " + isPlay);
+        //Debug.Log("isDead: " + isDead);
 
         //if (isPlay == true && isDead == false && LevlSet==true)
         {
@@ -341,8 +374,8 @@ public class GameManager : MonoBehaviour
 
     {
         Debug.Log("LateUpDate");
-        Debug.Log("isPlay: " + isPlay);
-        Debug.Log("isDead: " + isDead);
+        //Debug.Log("isPlay: " + isPlay);
+        //Debug.Log("isDead: " + isDead);
 
         //if (isPlay == true && isDead == false && LevlSet == true)
         {

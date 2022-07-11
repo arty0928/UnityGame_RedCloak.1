@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public class EnemyControllerAngle : MonoBehaviour
+public class FieldOfView1 : MonoBehaviour
 {
 	//raycast
+	public bool isSeen1 = false;
+
 	//public bool follow; //감지 했는지
 	public float meshResolution;
 	public int edgeResolveIterations;
@@ -26,35 +27,10 @@ public class EnemyControllerAngle : MonoBehaviour
 	// Target mask에 ray hit된 transform을 보관하는 리스트
 	public List<Transform> visibleTargets = new List<Transform>();
 
-	//public Transform player;
-	private Transform player;
-
-	public float playerDistance;
-	public float awareAI = 5f;
-	public float OriginalAIMoveSpeed;
-	//public float SpeedUpAIMoveSpeed;
-	public float damping = 6.0f;
-
-	//enemy patrol, chase
-
-	//public Transform[] navPoint;
-	public Vector3[] navPoint;
-	//private Transform navPos;
-	public Vector3 navPos;
-
-	public UnityEngine.AI.NavMeshAgent agent;
-
-	public int destPoint = 0;
-	private int randPos;
-	public bool range;
-
 
 	void Start()
 	{
-		player = GameObject.FindGameObjectWithTag("Player").transform;
-
-		//if (GameManager.I.isPlay == true && GameManager.I.isDead == false && GameManager.I.LevlSet == true)
-		{
+		
 			viewMesh = new Mesh();
 			viewMesh.name = "View mesh";
 			viewMeshFilter.mesh = viewMesh;
@@ -67,43 +43,13 @@ public class EnemyControllerAngle : MonoBehaviour
 			Debug.Log("isPlay: " + GameManager.I.isPlay);
 			Debug.Log("isDead: " + GameManager.I.isDead);
 
-			//처음 도착점 랜덤
-
-			/*var items = GameObject.FindGameObjectsWithTag("LunchToPut").Select(ItemToPut => ItemToPut.transform.position).ToArray();
-			items = items.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
-			itemPos = items[0];
-			Debug.Log("ItemToput");
-			target = Instantiate(ItemPrefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
-*/
 			var navPoints = GameObject.FindGameObjectsWithTag("patrolPoint").Select(ItemToPut => ItemToPut.transform.position).ToArray();
 			navPoints = navPoints.OrderBy(navPoint => Random.Range(-1.0f, 1.0f)).ToArray();
-
-
-			for (var i = 0; i < navPoints.Length; i++)
-			{
-				//Debug.Log("navPoints"+i + "EnemyControllerAngle" +navPoints[i]);
-				navPoint[i] = navPoints[i];
-			}
-
-
-			randPos = Random.Range(0, navPoint.Length + 1);
-			destPoint = (randPos) % navPoint.Length;
-			agent.destination = navPoint[destPoint];
-
-
-			agent.autoBraking = false;
 
 			//raycast
 			//트랜스폼을 받아온다
 			StartCoroutine(FindTargetsWithDelay(0.2f));
 			GameManager.I.LevlSet = false;
-
-			Debug.Log("EnemyControllerAngle Start() after LevelSet");
-			Debug.Log("isPlay: " + GameManager.I.isPlay);
-			Debug.Log("isDead: " + GameManager.I.isDead);
-
-
-		}
 
 	}
 
@@ -165,31 +111,31 @@ public class EnemyControllerAngle : MonoBehaviour
 		viewMesh.RecalculateNormals();
 	}
 	EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
-    {
+	{
 		float minAngle = minViewCast.angle;
 		float maxAngle = maxViewCast.angle;
 		Vector3 minPoint = Vector3.zero;
 		Vector3 maxPoint = Vector3.zero;
 
-		for(var i=0; i<edgeResolveIterations; i++)
-        {
+		for (var i = 0; i < edgeResolveIterations; i++)
+		{
 			float angle = (minAngle + maxAngle) / 2;
 			ViewCastInfo newViewCast = ViewCast(angle);
 			bool edgeDstThresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > edgeDstThreshold;
 
 
 			if (newViewCast.hit == minViewCast.hit && !edgeDstThresholdExceeded)
-            {
+			{
 				minAngle = angle;
 				minPoint = newViewCast.point;
-            }
-            else
-            {
+			}
+			else
+			{
 				maxAngle = angle;
 				maxPoint = newViewCast.point;
 
-            }
-        }
+			}
+		}
 		return new EdgeInfo(minPoint, maxPoint);
 
 	}
@@ -275,18 +221,13 @@ public class EnemyControllerAngle : MonoBehaviour
 				// 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleTargets에 Add
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
 				{
-
-					Chase();
+					isSeen1 = true;
 					visibleTargets.Add(target);
 				}
+				isSeen1 = false;
 
 			}
-			/*if (transform.CompareTag("EnemySpeedUp"))
-			//if (transform.tag == "EnemySpeedUp")
-			{
-				agent.speed = 3;
-			}
-*/
+			isSeen1 = false;
 		}
 	}
 
@@ -308,58 +249,10 @@ public class EnemyControllerAngle : MonoBehaviour
 
 	}
 
-	void FixedUpdate()
-	{
-
-
-		float distanceFormGoal = Vector3.Distance(transform.position, agent.destination);
-
-		//Debug.Log(distanceFormGoal + "이거임" + 0.1f);
-
-		//if (distanceFormGoal < 0.1f)
-		if (agent.remainingDistance < 0.5f)
-		{
-			//Debug.Log(distanceFormGoal + "GotoNext");
-			GotoNextPoint();
-			/*checkPos = true;
-			StartCoroutine(WaitForIt());*/
-		}
-
-	}
-
-	/*IEnumerator WaitForIt()
-    {
-		yield return new WaitForSeconds(2.0f);
-		checkPos = false;
-    }*/
 
 	void LookAtPlayer()
 	{
 		transform.LookAt(player);
-	}
-
-
-	void GotoNextPoint()
-	{
-		if (navPoint.Length == 0)
-			return;
-
-		agent.destination = navPoint[destPoint];
-
-		//int xcount = Random.Range(1, 6);
-		//int randPos = Random.Range(0, navPoint.Length + 1);
-		//destPoint = (randPos) % navPoint.Length;
-
-		randPos = Random.Range(0, navPoint.Length + 1);
-		destPoint = (randPos) % navPoint.Length;
-		agent.destination = navPoint[destPoint];
-
-	}
-
-	void Chase()
-	{
-		agent.destination = player.position;
-		//transform.Translate(player.position * AIMoveSpeed * Time.deltaTime);
 	}
 
 }

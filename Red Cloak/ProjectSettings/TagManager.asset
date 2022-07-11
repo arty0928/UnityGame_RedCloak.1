@@ -12,6 +12,7 @@ TagManager:
   - KillingPlantToPut
   - Wall
   - HideZone
+  - HideZoneToPut
   layers:
   - Default
   - TransparentFX
