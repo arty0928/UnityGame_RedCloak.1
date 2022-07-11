@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using System.Linq;
 
-public class FieldOfView1 : MonoBehaviour
+public class FieldOfView2 : MonoBehaviour
 {
 	//raycast
-	public bool isSeen1 = false;
+	public bool isSeen2 = false;
 
 	//public bool follow; //감지 했는지
 	public float meshResolution;
@@ -27,29 +27,41 @@ public class FieldOfView1 : MonoBehaviour
 	// Target mask에 ray hit된 transform을 보관하는 리스트
 	public List<Transform> visibleTargets = new List<Transform>();
 
+	//public Transform player;
+	/*private Transform player;*/
+
+	/*public float playerDistance;
+	public float awareAI = 5f;
+	public float OriginalAIMoveSpeed;
+	//public float SpeedUpAIMoveSpeed;
+	public float damping = 6.0f;
+
+	//enemy patrol, chase
+
+	//public Transform[] navPoint;
+	public Vector3[] navPoint;
+	//private Transform navPos;
+	public Vector3 navPos;
+
+	public UnityEngine.AI.NavMeshAgent agent;
+
+	public int destPoint = 0;
+	private int randPos;
+	public bool range;
+*/
 
 	void Start()
 	{
-		
-			viewMesh = new Mesh();
-			viewMesh.name = "View mesh";
-			viewMeshFilter.mesh = viewMesh;
 
-			//enemyHealth = 100;
-			UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		viewMesh = new Mesh();
+		viewMesh.name = "View mesh";
+		viewMeshFilter.mesh = viewMesh;
 
-			Debug.Log("EnemyControllerAngle Start()");
-			//GameManager.I.isPlay = true;
-			Debug.Log("isPlay: " + GameManager.I.isPlay);
-			Debug.Log("isDead: " + GameManager.I.isDead);
+		//raycast
+		//트랜스폼을 받아온다
+		StartCoroutine(FindTargetsWithDelay(0.2f));
+		GameManager.I.LevlSet = false;
 
-			var navPoints = GameObject.FindGameObjectsWithTag("patrolPoint").Select(ItemToPut => ItemToPut.transform.position).ToArray();
-			navPoints = navPoints.OrderBy(navPoint => Random.Range(-1.0f, 1.0f)).ToArray();
-
-			//raycast
-			//트랜스폼을 받아온다
-			StartCoroutine(FindTargetsWithDelay(0.2f));
-			GameManager.I.LevlSet = false;
 
 	}
 
@@ -221,13 +233,14 @@ public class FieldOfView1 : MonoBehaviour
 				// 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleTargets에 Add
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
 				{
-					isSeen1 = true;
+					isSeen2 = true;
 					visibleTargets.Add(target);
 				}
-				isSeen1 = false;
+				isSeen2 = false;
 
 			}
-			isSeen1 = false;
+			isSeen2 = false;
+
 		}
 	}
 
@@ -247,12 +260,6 @@ public class FieldOfView1 : MonoBehaviour
 	{
 		DrawFieldOfView();
 
-	}
-
-
-	void LookAtPlayer()
-	{
-		transform.LookAt(player);
 	}
 
 }

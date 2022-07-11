@@ -20534,6 +20534,7 @@ GameObject:
   - component: {fileID: 1630552098}
   - component: {fileID: 1630552097}
   - component: {fileID: 1630552096}
+  - component: {fileID: 1630552099}
   - component: {fileID: 1630552095}
   - component: {fileID: 1630552091}
   m_Layer: 8
@@ -20552,36 +20553,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630552090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e205c4ddefbaa33458de336d9b6e716d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0556241cd7da9704dae0dd59cd16cd6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshResolution: 0
-  edgeResolveIterations: 0
-  edgeDstThreshold: 0
-  viewMeshFilter: {fileID: 117692240}
-  viewRadius: 3
-  viewAngle: 90
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 128
-  visibleTargets: []
   playerDistance: 0
   awareAI: 5
   OriginalAIMoveSpeed: 0
   damping: 6
-  navPoint:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  navPoint: []
   navPos: {x: 0, y: 0, z: 0}
-  agent: {fileID: 1630552096}
+  agent: {fileID: 0}
   destPoint: 0
   range: 0
 --- !u!23 &1630552092
@@ -20658,22 +20639,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630552090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d97aa45ddd022d244befcf4f075ec0e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 18481562c139f2b479f60f0b51004cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius2: 4.5
-  viewAngle2: 110
-  meshResolution2: 1
-  edgeResolveIterations2: 4
-  edgeDstThreshold2: 4.5
-  viewMeshFilter2: {fileID: 0}
-  targetMask2:
+  isSeen2: 0
+  meshResolution: 0
+  edgeResolveIterations: 0
+  edgeDstThreshold: 0
+  viewMeshFilter: {fileID: 0}
+  viewRadius: 0
+  viewAngle: 0
+  targetMask:
     serializedVersion: 2
-    m_Bits: 64
-  obstacleMask2:
+    m_Bits: 0
+  obstacleMask:
     serializedVersion: 2
-    m_Bits: 128
-  visibleTargets2: []
+    m_Bits: 0
+  visibleTargets: []
 --- !u!195 &1630552096
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -20726,6 +20708,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1630552099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630552090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed02d48796ea673468ede7556befbd7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSeen1: 0
+  meshResolution: 0
+  edgeResolveIterations: 0
+  edgeDstThreshold: 0
+  viewMeshFilter: {fileID: 0}
+  viewRadius: 0
+  viewAngle: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  visibleTargets: []
 --- !u!1 &1635116706
 GameObject:
   m_ObjectHideFlags: 0
