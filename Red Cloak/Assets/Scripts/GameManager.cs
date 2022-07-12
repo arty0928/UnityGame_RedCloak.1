@@ -46,12 +46,9 @@ public class GameManager : MonoBehaviour
     public Vector3 EnemyPos;
     public GameObject EnemyB_Prefab;
     public GameObject EnemyC_Prefab; //SizeUp
-    //public GameObject EnemyD_Prefab; //KillingPlants
-    Transform[] EnemyPlants;
-
-
     public GameObject EnemyPlant_Prefab;
-
+    public GameObject EnemyD_Prefab; //double RayCast
+    //Transform[] EnemyPlants;
 
     //HideZonde
     public GameObject HideZone_Prefab;
@@ -111,28 +108,34 @@ public class GameManager : MonoBehaviour
     public void StageEnd()
     {
         Debug.Log("StageEnd");
-        Debug.Log("isPlay: " + isPlay);
-        Debug.Log("isDead: " + isDead);
+        //Debug.Log("isPlay: " + isPlay);
+        //Debug.Log("isDead: " + isDead);
         //isPlay = true;
         //isDead = false;
         playTime = 0;
-        //player.lunchitem = stage * 2;
         player.lunchitem = 0;
+        
+        
         player.transform.position = Vector3.zero;
         //isPlay = false;
         
         count = 0;
+        stage++;
 
-        var items = GameObject.FindGameObjectsWithTag("Enemy");
-        for (var i = 0; i < items.Length; i++)
+        if(stage <= 10)
         {
-            Destroy(items[i]);
+            var items = GameObject.FindGameObjectsWithTag("Enemy");
+            for (var i = 0; i < items.Length; i++)
+            {
+                Destroy(items[i]);
+            }
+
+            EnemyToPut();
+
         }
 
-        EnemyToPut();
 
-
-        if (stage >= 6)
+        if (stage > 6)
         {
             var KillingPlant = GameObject.FindGameObjectsWithTag("KillingPlant");
             for (var i = 0; i < KillingPlant.Length; i++)
@@ -140,22 +143,29 @@ public class GameManager : MonoBehaviour
                 Destroy(KillingPlant[i]);
             }
 
-            PlantToPut();
-        }
-
-        if (stage >=10)
-        {
             var HideZoneExist = GameObject.FindGameObjectsWithTag("HideZone");
             for (var j = 0; j < HideZoneExist.Length; j++)
             {
                 Destroy(HideZoneExist[j]);
             }
+
             HideZoneToPut();
-
+            PlantToPut();
         }
-        stage++;
 
+        if (stage > 10)
+        {
+            var DoubleRayCasts = GameObject.FindGameObjectsWithTag("DoubleRayCast");
+            for (var i = 0; i < DoubleRayCasts.Length; i++)
+            {
+                Destroy(DoubleRayCasts[i]);
+            }
 
+            DoubleRayCastEnemyToPut();
+        }
+        Debug.Log("LevelUp: " + stage);
+        Debug.Log("player.lunchitem" + player.lunchitem);
+        Debug.Log("=========================================");
     }
 
     /*IEnumerator InBattle()
@@ -234,7 +244,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("ItemToPut");
         target = Instantiate(ItemPrefab, new Vector3(itemPos.x, itemPos.y, itemPos.z), transform.rotation).transform;
         Debug.Log("stage: "+stage);
-        Debug.Log("ItemToput");
+        Debug.Log("After_ItemToput");
         //Debug.Log("isPlay: " + isPlay);
         //Debug.Log("isDead: " + isDead);
 
@@ -254,27 +264,34 @@ public class GameManager : MonoBehaviour
         //Level6부터
         PlantToPut();
         HideZoneToPut();
-
+        
         if (stage >= 5)
-        {
-            for (var j = 0; j < (stage * 1); j++)
+        {   
+            if(stage >= 10)
             {
-                if(stage * 1 <= Enemies.Length)
-                {
-                    if (count < Mathf.FloorToInt(stage / 2))
-                    {
-                        Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
-                        count++;
-                    }
-                    else
-                    {
-                        Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
-                    }
-                }
-                
+                DoubleRayCastEnemyToPut();
             }
-        }
+            else
+            {
+                for (var j = 0; j < (stage * 1); j++)
+                {
+                    if (stage * 1 <= Enemies.Length)
+                    {
+                        if (count < Mathf.FloorToInt(stage / 2))
+                        {
+                            Instantiate(EnemyC_Prefab, Enemies[j], transform.rotation);
+                            count++;
+                        }
+                        else
+                        {
+                            Instantiate(EnemyB_Prefab, Enemies[j], transform.rotation);
+                        }
+                    }
 
+                }
+            }
+           
+        }
         else {
             for (var j = 0; j < (stage * 1); j++)
                 if(stage * 1 <= Enemies.Length)
@@ -314,12 +331,14 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+
     }
 
     public void HideZoneToPut()
     {
 
-        if (stage >= 6)
+        if (stage >=10)
         {
             /*if (HideZoneCallCount != 0)
             {
@@ -344,11 +363,44 @@ public class GameManager : MonoBehaviour
             }*/
             HideZoneCallCount++;
         }
-        
       
+    }
+
+    public void DoubleRayCastEnemyToPut()
+    {
+
+        Debug.Log("DoubleRayCastEnemyToPut");
+        var DoubleRayCatEnemies = GameObject.FindGameObjectsWithTag("LunchToPut").Select(EnemyToPut => EnemyToPut.transform.position).ToArray();
+        DoubleRayCatEnemies = DoubleRayCatEnemies.OrderBy(Enemy => Random.Range(-1.0f, 1.0f)).ToArray();
+
+        if (stage >= 10)
+        {
+            
+                
+                    for(var i = 0; i <3; i++)
+                    {
+                        Instantiate(EnemyD_Prefab, DoubleRayCatEnemies[i], transform.rotation);
+                        
+                    }
+                    /*for(var k =0; k < stage - 3; k++)
+                    {
+                        Instantiate(EnemyB_Prefab, DoubleRayCatEnemies[k], transform.rotation);
+                    }*/
+                
+
+            
+        }
+
+        
     }
     private void Update()
     {
+        if (player.lunchitem >= stage)
+        {
+            Debug.Log("Eat all Lunch at This Stage");
+            player.lunchitem = 0;
+            StageEnd();
+        }
 
         Debug.Log("Update");
         //Debug.Log("isPlay: " + isPlay);
@@ -365,7 +417,8 @@ public class GameManager : MonoBehaviour
             dirrectArrow.transform.rotation = new Quaternion(0, dirrectArrow.transform.rotation.y, 0, dirrectArrow.transform.rotation.w);
 
         }
-       
+        
+
     }
 
 
@@ -386,7 +439,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                StageTxt.text = "STAGE " + stage;
+                StageTxt.text = "STAGE" + stage;
 
             }
 
@@ -405,11 +458,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Play Time Over");
             }
 
-            if (player.lunchitem >= stage)
-            {
-                Debug.Log("Eat all Lunch at This Stage");
-                StageEnd();
-            }
+            
 
             //먹은 아이템 개수
             //ItemTxt.text = "Item" + string.Format("{0:n0}", player.lunchitem); //아이템 먹은 개수 반영하기

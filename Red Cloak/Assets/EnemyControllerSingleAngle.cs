@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 
-public class EnemyControllerDoubleAngle : MonoBehaviour
+public class EnemyControllerSingleAngle : MonoBehaviour
 {
 	//Raycast
 	public FieldOfView1 firstRayCast;
-	public FieldOfView2 SecondRayCast;
+	//FieldOfView2 SecondRayCast;
 	public PlayerController playercontroller;
 
 	private Transform player;
@@ -92,14 +92,6 @@ public class EnemyControllerDoubleAngle : MonoBehaviour
 	{
 
 		if (firstRayCast.isSeen1 == true)
-		{
-			Chase();
-		}
-		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == true)
-		{
-			//그냥 지나감
-		}
-		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == false)
 		{
 			Chase();
 		}

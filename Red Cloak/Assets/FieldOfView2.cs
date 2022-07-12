@@ -1,84 +1,87 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 
 public class FieldOfView2 : MonoBehaviour
 {
-	//raycast
 	public bool isSeen2 = false;
 
-	//public bool follow; //감지 했는지
-	public float meshResolution;
-	public int edgeResolveIterations;
-	public float edgeDstThreshold;
-
-	public MeshFilter viewMeshFilter;
-	Mesh viewMesh;
-
-	// 시야 영역의 반지름과 시야 각도
-	public float viewRadius;
+	public float viewRadius2;
 	[Range(0, 360)]
-	public float viewAngle;
+	public float viewAngle2;
 
-	// 마스크 2종
-	public LayerMask targetMask, obstacleMask;
+	public LayerMask targetMask2;
+	public LayerMask obstacleMask2;
 
-	// Target mask에 ray hit된 transform을 보관하는 리스트
-	public List<Transform> visibleTargets = new List<Transform>();
+	[HideInInspector]
+	public List<Transform> visibleTargets2 = new List<Transform>();
 
-	//public Transform player;
-	/*private Transform player;*/
+	public float meshResolution2;
+	public int edgeResolveIterations2;
+	public float edgeDstThreshold2;
 
-	/*public float playerDistance;
-	public float awareAI = 5f;
-	public float OriginalAIMoveSpeed;
-	//public float SpeedUpAIMoveSpeed;
-	public float damping = 6.0f;
-
-	//enemy patrol, chase
-
-	//public Transform[] navPoint;
-	public Vector3[] navPoint;
-	//private Transform navPos;
-	public Vector3 navPos;
-
-	public UnityEngine.AI.NavMeshAgent agent;
-
-	public int destPoint = 0;
-	private int randPos;
-	public bool range;
-*/
+	public MeshFilter viewMeshFilter2;
+	Mesh viewMesh2;
 
 	void Start()
 	{
+		viewMesh2 = new Mesh();
+		viewMesh2.name = "View Mesh";
+		viewMeshFilter2.mesh = viewMesh2;
 
-		viewMesh = new Mesh();
-		viewMesh.name = "View mesh";
-		viewMeshFilter.mesh = viewMesh;
-
-		//raycast
-		//트랜스폼을 받아온다
-		StartCoroutine(FindTargetsWithDelay(0.2f));
-		GameManager.I.LevlSet = false;
+		StartCoroutine("FindTargetsWithDelay", .2f);
+	}
 
 
+	IEnumerator FindTargetsWithDelay(float delay)
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(delay);
+			FindVisibleTargets();
+		}
+	}
+
+	void LateUpdate()
+	{
+		DrawFieldOfView();
+	}
+
+	void FindVisibleTargets()
+	{
+		visibleTargets2.Clear();
+		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius2, targetMask2);
+
+		for (int i = 0; i < targetsInViewRadius.Length; i++)
+		{
+			Transform target = targetsInViewRadius[i].transform;
+			Vector3 dirToTarget = (target.position - transform.position).normalized;
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle2 / 2)
+			{
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask2))
+				{
+					visibleTargets2.Add(target);
+					isSeen2 = true;
+				}isSeen2 = false;
+			}isSeen2 = false;
+		}
 	}
 
 	void DrawFieldOfView()
 	{
-		int stepCount = Mathf.RoundToInt(viewAngle * meshResolution);
-		float stepAngleSize = viewAngle / stepCount;
+		int stepCount = Mathf.RoundToInt(viewAngle2 * meshResolution2);
+		float stepAngleSize = viewAngle2 / stepCount;
 		List<Vector3> viewPoints = new List<Vector3>();
 		ViewCastInfo oldViewCast = new ViewCastInfo();
 		for (int i = 0; i <= stepCount; i++)
 		{
-			float angle = transform.eulerAngles.y - viewAngle / 2 + stepAngleSize * i;
+			float angle = transform.eulerAngles.y - viewAngle2 / 2 + stepAngleSize * i;
 			ViewCastInfo newViewCast = ViewCast(angle);
 
 			if (i > 0)
 			{
-				bool edgeDstThresholdExceeded = Mathf.Abs(oldViewCast.dst - newViewCast.dst) > edgeDstThreshold;
+				bool edgeDstThresholdExceeded = Mathf.Abs(oldViewCast.dst - newViewCast.dst) > edgeDstThreshold2;
 				if (oldViewCast.hit != newViewCast.hit || (oldViewCast.hit && newViewCast.hit && edgeDstThresholdExceeded))
 				{
 					EdgeInfo edge = FindEdge(oldViewCast, newViewCast);
@@ -116,12 +119,14 @@ public class FieldOfView2 : MonoBehaviour
 			}
 		}
 
-		viewMesh.Clear();
+		viewMesh2.Clear();
 
-		viewMesh.vertices = vertices;
-		viewMesh.triangles = triangles;
-		viewMesh.RecalculateNormals();
+		viewMesh2.vertices = vertices;
+		viewMesh2.triangles = triangles;
+		viewMesh2.RecalculateNormals();
 	}
+
+
 	EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
 	{
 		float minAngle = minViewCast.angle;
@@ -129,13 +134,12 @@ public class FieldOfView2 : MonoBehaviour
 		Vector3 minPoint = Vector3.zero;
 		Vector3 maxPoint = Vector3.zero;
 
-		for (var i = 0; i < edgeResolveIterations; i++)
+		for (int i = 0; i < edgeResolveIterations2; i++)
 		{
 			float angle = (minAngle + maxAngle) / 2;
 			ViewCastInfo newViewCast = ViewCast(angle);
-			bool edgeDstThresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > edgeDstThreshold;
 
-
+			bool edgeDstThresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > edgeDstThreshold2;
 			if (newViewCast.hit == minViewCast.hit && !edgeDstThresholdExceeded)
 			{
 				minAngle = angle;
@@ -145,12 +149,37 @@ public class FieldOfView2 : MonoBehaviour
 			{
 				maxAngle = angle;
 				maxPoint = newViewCast.point;
-
 			}
 		}
-		return new EdgeInfo(minPoint, maxPoint);
 
+		return new EdgeInfo(minPoint, maxPoint);
 	}
+
+
+	ViewCastInfo ViewCast(float globalAngle)
+	{
+		Vector3 dir = DirFromAngle(globalAngle, true);
+		RaycastHit hit;
+
+		if (Physics.Raycast(transform.position, dir, out hit, viewRadius2, obstacleMask2))
+		{
+			return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
+		}
+		else
+		{
+			return new ViewCastInfo(false, transform.position + dir * viewRadius2, viewRadius2, globalAngle);
+		}
+	}
+
+	public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
+	{
+		if (!angleIsGlobal)
+		{
+			angleInDegrees += transform.eulerAngles.y;
+		}
+		return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+	}
+
 	public struct ViewCastInfo
 	{
 		public bool hit;
@@ -165,8 +194,6 @@ public class FieldOfView2 : MonoBehaviour
 			dst = _dst;
 			angle = _angle;
 		}
-
-
 	}
 
 	public struct EdgeInfo
@@ -179,87 +206,6 @@ public class FieldOfView2 : MonoBehaviour
 			pointA = _pointA;
 			pointB = _pointB;
 		}
-
-	}
-
-	ViewCastInfo ViewCast(float globalAngle)
-	{
-		Vector3 dir = DirFromAngle(globalAngle, true);
-		RaycastHit hit;
-
-		if (Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
-		{
-			return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
-		}
-		else
-		{
-			return new ViewCastInfo(false, transform.position + dir * viewRadius, viewRadius, globalAngle);
-		}
-	}
-
-	IEnumerator FindTargetsWithDelay(float delay)
-	{
-		Debug.Log("FindTargetWithDelay");
-		Debug.Log("isPlay: " + GameManager.I.isPlay);
-		Debug.Log("isDead: " + GameManager.I.isDead);
-
-		//if (GameManager.I.isPlay == true && GameManager.I.isDead==false)
-		{
-			while (true)
-			{
-				yield return new WaitForSeconds(delay);
-				FindVisibleTargets();
-			}
-		}
-
-	}
-
-	void FindVisibleTargets()
-	{
-		visibleTargets.Clear();
-		// viewRadius를 반지름으로 한 원 영역 내 targetMask 레이어인 콜라이더를 모두 가져옴
-		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
-		for (int i = 0; i < targetsInViewRadius.Length; i++)
-		{
-			Transform target = targetsInViewRadius[i].transform;
-			Vector3 dirToTarget = (target.position - transform.position).normalized;
-
-			// 플레이어와 forward와 target이 이루는 각이 설정한 각도 내라면
-			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
-			{
-				float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
-
-				// 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleTargets에 Add
-				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
-				{
-					isSeen2 = true;
-					visibleTargets.Add(target);
-				}
-				isSeen2 = false;
-
-			}
-			isSeen2 = false;
-
-		}
-	}
-
-	// y축 오일러 각을 3차원 방향 벡터로 변환한다.
-	// 원본과 구현이 살짝 다름에 주의. 결과는 같다.
-	public Vector3 DirFromAngle(float angleDegrees, bool angleIsGlobal)
-	{
-		if (!angleIsGlobal)
-		{
-			angleDegrees += transform.eulerAngles.y;
-		}
-
-		return new Vector3(Mathf.Cos((-angleDegrees + 90) * Mathf.Deg2Rad), 0, Mathf.Sin((-angleDegrees + 90) * Mathf.Deg2Rad));
-	}
-
-	void LateUpdate()
-	{
-		DrawFieldOfView();
-
 	}
 
 }

@@ -236,8 +236,13 @@ public class PlayerController : MonoBehaviour
 
             }
             //먹으면 삭제
-            GameManager.I.ItemToPut();
-            Destroy(other.gameObject);
+            Debug.Log("Ate Item");
+            if(lunchitem < GameManager.I.stage)
+            {
+                GameManager.I.ItemToPut();
+                Destroy(other.gameObject);
+            }
+            
             //GameManager.I.ItemToPut();
             //도시락 획득 시 lunch.cs의 1씩 증가되는 값을 문자로 변환하여 text 변수에 저장
             //lunchCount.text = lunchAmount.ToString();

@@ -13,6 +13,7 @@ TagManager:
   - Wall
   - HideZone
   - HideZoneToPut
+  - DoubleRayCast
   layers:
   - Default
   - TransparentFX

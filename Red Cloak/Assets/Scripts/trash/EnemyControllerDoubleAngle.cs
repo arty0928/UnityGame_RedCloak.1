@@ -7,8 +7,8 @@ using UnityEngine;
 public class EnemyControllerAngle : MonoBehaviour
 {
 	//Raycast
-	FieldOfView1 firstRayCast;
-	FieldOfView2 SecondRayCast;
+	FieldOfView1 InRayCast;
+	FieldOfView2 OutRayCast;
 	PlayerController playercontroller;
 
 	private Transform player;
@@ -91,16 +91,17 @@ public class EnemyControllerAngle : MonoBehaviour
 	void FixedUpdate()
 	{
 
-		if(firstRayCast.isSeen1 == true)
+		if(OutRayCast.isSeen2 == true)
         {
 			Chase();
         }
-		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == true)
+		else if (InRayCast.isSeen1 == false && OutRayCast.isSeen2 == true && playercontroller.isHide == true)
         {
-			//그냥 지나감
+			//아웃cast에서 봤는데 hide -> 그냥 지나감
         }
-		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == false)
+		else if (InRayCast.isSeen1 == false && OutRayCast.isSeen2 == true && playercontroller.isHide == false)
         {
+			//아웃cast에서 봤는데 unhide -> chase
 			Chase();
         }
 
