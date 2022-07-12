@@ -62,11 +62,19 @@ public class FieldOfView1 : MonoBehaviour
 				float dstToTarget = Vector3.Distance(transform.position, target.position);
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
 				{
+
 					visibleTargets.Add(target);
 					isSeen1 = true;
 				}
+				else { 
+					isSeen1 = false; 
+				}
+			}
+            else
+            {
 				isSeen1 = false;
-			}isSeen1 = false;
+			}
+			
 		}
 	}
 

@@ -87,7 +87,7 @@ public class EnemyControllerSingleAngle : MonoBehaviour
 
 	}
 
-
+	
 	void FixedUpdate()
 	{
 

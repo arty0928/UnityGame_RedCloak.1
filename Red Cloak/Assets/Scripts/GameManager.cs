@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
     }
     public void StageEnd()
     {
+
         Debug.Log("StageEnd");
         //Debug.Log("isPlay: " + isPlay);
         //Debug.Log("isDead: " + isDead);
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour
         player.lunchitem = 0;
         
         
-        player.transform.position = Vector3.zero;
+        
         //isPlay = false;
         
         count = 0;
@@ -124,10 +125,10 @@ public class GameManager : MonoBehaviour
 
         if(stage <= 10)
         {
-            var items = GameObject.FindGameObjectsWithTag("Enemy");
-            for (var i = 0; i < items.Length; i++)
+            var Enemy = GameObject.FindGameObjectsWithTag("Enemy");
+            for (var i = 0; i < Enemy.Length; i++)
             {
-                Destroy(items[i]);
+                Destroy(Enemy[i]);
             }
 
             EnemyToPut();
@@ -163,9 +164,14 @@ public class GameManager : MonoBehaviour
 
             DoubleRayCastEnemyToPut();
         }
+
+        Debug.Log("playerPositionReset");
+        player.transform.position = new Vector3(0, 0.74f , -0.68f);
         Debug.Log("LevelUp: " + stage);
-        Debug.Log("player.lunchitem" + player.lunchitem);
+        Debug.Log("player.lunchitem: " + player.lunchitem);
         Debug.Log("=========================================");
+        Debug.Log("stage: "+ stage);
+        Debug.Log("player.lunchitem: " + player.lunchitem);
     }
 
     /*IEnumerator InBattle()
@@ -395,6 +401,7 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
+        //이거 마지막에 지워야 함 그래야 도시락 개수 이상하게 반영되서 레벨업 되는 것 없앨 수 있음
         if (player.lunchitem >= stage)
         {
             Debug.Log("Eat all Lunch at This Stage");

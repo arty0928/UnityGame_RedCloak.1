@@ -97,7 +97,7 @@ public class EnemyControllerDoubleAngle : MonoBehaviour
 		}
 		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == true)
 		{
-			//그냥 지나감
+			GotoNextPoint();
 		}
 		else if (firstRayCast.isSeen1 == false && SecondRayCast.isSeen2 == true && playercontroller.isHide == false)
 		{

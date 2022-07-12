@@ -63,8 +63,10 @@ public class FieldOfView2 : MonoBehaviour
 				{
 					visibleTargets2.Add(target);
 					isSeen2 = true;
-				}isSeen2 = false;
-			}isSeen2 = false;
+				}
+				else { isSeen2 = false; }
+			}
+			else { isSeen2 = false; }
 		}
 	}
 

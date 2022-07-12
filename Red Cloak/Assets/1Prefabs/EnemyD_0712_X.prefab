@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 971580629432824133}
   - component: {fileID: 971580629432824185}
   m_Layer: 8
-  m_Name: EnemyD_0712_doubleRayCast
+  m_Name: EnemyD_0712_X
   m_TagString: DoubleRayCast
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

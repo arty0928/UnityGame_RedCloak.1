@@ -238,9 +238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fc8e90f114f984c9962e7276cb9c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_tr: {fileID: 0}
+  distance: 10
+  m_layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  checkWall: 0
   _rigidbody: {fileID: 1760477778307556906}
   _joystick: {fileID: 0}
-  _animator: {fileID: 0}
   _moveSpeed: 10
   stageNum: 0
   lunchitem: 0
@@ -251,3 +256,5 @@ MonoBehaviour:
   maxSaveItem: 100
   ItemPoint: []
   CoinSound: {fileID: 0}
+  GameOverSound: {fileID: 0}
+  isHide: 0
